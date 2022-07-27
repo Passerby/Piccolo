@@ -60,14 +60,31 @@ if(NOT TARGET Jolt)
 
     if(ENABLE_PHYSICS_DEBUG_RENDERER)
         set_target_properties(Jolt TestFramework
-            PROPERTIES 
+            PROPERTIES
             FOLDER ${third_party_folder}/JoltPhysics
             MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
     else()
         set_target_properties(Jolt
-            PROPERTIES 
+            PROPERTIES
             FOLDER ${third_party_folder}/JoltPhysics
             MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
     endif()
 
+endif()
+
+if(NOT TARGET libzmq-static)
+    option(ENABLE_CURVE "" OFF)
+    SET(ZMQ_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+    SET(ENABLE_WS OFF CACHE BOOL "" FORCE)
+    SET(ENABLE_CURVE OFF CACHE BOOL "" FORCE)
+    SET(ZMQ_STATIC ON CACHE BOOL "" FORCE)
+    # SET(WITH_DOCS OFF CACHE BOOL "" FORCE)
+    add_subdirectory(libzmq)
+    set_target_properties(libzmq-static PROPERTIES FOLDER ${third_party_folder}/libzmq-static)
+endif()
+
+if(NOT TARGET cppzmq-static)
+    SET(CPPZMQ_BUILD_TESTS OFF CACHE BOOL "Whether or not to build the tests" FORCE)
+    add_subdirectory(cppzmq)
+    set_target_properties(cppzmq-static PROPERTIES FOLDER ${third_party_folder}/cppzmq-static)
 endif()
